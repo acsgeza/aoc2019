@@ -2,7 +2,7 @@ package aoc_1
 import RunAoc
 import java.io.File
 
-class Day(): RunAoc {
+class Day : RunAoc {
     fun fuel(mass:Int) = (Math.floor(mass/3.0)-2).toInt()
 
     override fun a():Int {
