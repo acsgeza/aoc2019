@@ -9,6 +9,7 @@ class Day: RunAoc {
     val init_memory:MutableList<Int> by lazy {resetMemory()}
     val INPUT_VALUE=1
     lateinit var ls:MutableList<Int>
+    var pointer=0
     var control = ""
 
     fun testList(parls:MutableList<Int>) {
@@ -27,26 +28,25 @@ class Day: RunAoc {
 
     override fun a(): Int {
         ls= mutableListOf<Int>().apply { addAll(init_memory) }
-//        ls[1]=12
-//        ls[2]=2
         return instruct()
     }
 
 
     fun instruct(): Int {
-        val it =ls.iterator()
+
         var i=0
         var tmpvalue=0
-        loop@ while (it.hasNext()) {
-            control=it.next().toString()
+        loop@ while (pointer<=ls.size) {
+            control=ls[pointer++].toString()
             val command = controllast(2)
             when(command){
-                1 -> output(input(it)+input(it),it)
-                2 -> output(input(it)*input(it),it)
-                3 -> write(INPUT_VALUE,it)
-                4 -> println(input(it))
+                1 -> write(read()+read())
+                2 -> write(read()*read())
+                3 -> input(INPUT_VALUE)
+                4 -> println(read())
                 99 -> break@loop
             }
+//            println("Pointer:"+pointer+"  Value:"+ls[pointer])
         }
         return ls[0]
     }
@@ -59,16 +59,16 @@ class Day: RunAoc {
 
     }
 
-    fun input(it:Iterator<Int>):Int {
-        return  if(controllast()==1) it.next() else ls[it.next()]
+    fun read():Int {
+        return  if(controllast()==1) ls[pointer++] else ls[ls[pointer++]]
     }
 
-    fun output(value:Int,it:Iterator<Int>) {
-        if(controllast()==1) it.next() else ls[it.next()]=value
+    fun write(value:Int) {
+        if(controllast()==1) ls[pointer++]=value else ls[ls[pointer++]]=value
     }
 
-    fun write(value:Int,it:Iterator<Int>) {
-        ls[it.next()]=value
+    fun input(value:Int) {
+        ls[ls[pointer++]]=value
     }
 
     override fun b():Int {
@@ -80,6 +80,6 @@ fun main() {
     val day=Day()
 //    return
 //    day.testList(mutableListOf<Int>(3,2,4,0,99))
-    day.testList(mutableListOf<Int>(1001,1,1,4,99,5,6,0,99))
+    day.testList(mutableListOf<Int>(1,1,1,4,99,5,6,0,99))
     println(day.instruct())
 }
