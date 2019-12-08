@@ -3,14 +3,15 @@ import RunAoc
 import java.io.File
 import java.util.*
 
+const val INPUT = 5
 
 class Day: RunAoc {
 
-    val init_memory:MutableList<Int> by lazy {resetMemory()}
-    val INPUT_VALUE=5
+    private val initial:MutableList<Int> by lazy {resetMemory()}
+
     lateinit var ls:MutableList<Int>
-    var pointer=0
-    var control = ""
+    private var pointer=0
+    private var control = ""
 
     fun testList(parls:MutableList<Int>) {
         ls=parls
@@ -27,7 +28,7 @@ class Day: RunAoc {
     }
 
     override fun a(): Int {
-        ls= mutableListOf<Int>().apply { addAll(init_memory) }
+        ls= mutableListOf<Int>().apply { addAll(initial) }
         return instruct()
     }
 
@@ -42,7 +43,7 @@ class Day: RunAoc {
             when(command){
                 1 -> write(read()+read())
                 2 -> write(read()*read())
-                3 -> input(INPUT_VALUE)
+                3 -> input(INPUT)
                 4 -> println(read())
                 5 -> jumpTrue()
                 6 -> jumpFalse()
